@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.sdk">
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
@@ -49,6 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Plugin.LocalNotification" Version="10.0.3" />
 	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 	  <PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
 	</ItemGroup>
@@ -64,6 +64,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ProductPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ShopEntryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ShopPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

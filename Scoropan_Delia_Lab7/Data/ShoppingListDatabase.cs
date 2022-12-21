@@ -17,11 +17,11 @@ namespace Scoropan_Delia_Lab7.Data
         readonly SQLiteAsyncConnection _database;
         public ShoppingListDatabase(string dbPath)
         {
-            _database = new SQLiteAsyncConnection(dbPath);
-            _database.CreateTableAsync<ShopList>().Wait();
+            database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<ShopList>().Wait();
             _database.CreateTableAsync<Product>().Wait();
             _database.CreateTableAsync<ListProduct>().Wait();
+            _database.CreateTableAsync<Shop>().Wait();
         }
         public Task<int> SaveProductAsync(Product product)
         {
@@ -61,6 +61,22 @@ namespace Scoropan_Delia_Lab7.Data
             + " on P.ID = LP.ProductID where LP.ShopListID = ?",
             shoplistid);
         }
+        public Task<List<Shop>> GetShopsAsync()
+        {
+            return _database.Table<Shop>().ToListAsync();
+        }
+        public Task<int> SaveShopAsync(Shop shop)
+        {
+            if (shop.ID != 0)
+            {
+                return _database.UpdateAsync(shop);
+            }
+            else
+            {
+                return _database.InsertAsync(shop);
+            }
+        }
+
 
     }
 }

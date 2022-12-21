@@ -2,26 +2,28 @@ namespace Scoropan_Delia_Lab7;
 using Scoropan_Delia_Lab7.Models;
 
 
-    public partial class ListPage : ContentPage
+public partial class ListPage : ContentPage
     {
         public ListPage()
         {
             InitializeComponent();
         }
-        async void OnSaveButtonClicked(object sender, EventArgs e)
+        public async void OnSaveButtonClicked(object sender, EventArgs e)
         {
             var slist = (ShopList)BindingContext;
             slist.Date = DateTime.UtcNow;
-            await App.Database.SaveShopListAsync(slist);
+        Shop selectedShop = (ShopPicker.SelectedItem as Shop);
+        slist.ShopID = selectedShop.ID;
+        await App.Database.SaveShopListAsync(slist);
             await Navigation.PopAsync();
         }
-        async void OnDeleteButtonClicked(object sender, EventArgs e)
+        public async void OnDeleteButtonClicked(object sender, EventArgs e)
         {
             var slist = (ShopList)BindingContext;
             await App.Database.DeleteShopListAsync(slist);
             await Navigation.PopAsync();
         }
-        async void OnChooseButtonClicked(object sender, EventArgs e)
+       public async void OnChooseButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new ProductPage((ShopList)
            this.BindingContext)
@@ -33,7 +35,10 @@ using Scoropan_Delia_Lab7.Models;
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            var shopl = (ShopList)BindingContext;
+        var items = await App.Database.GetShopsAsync();
+        ShopPicker.ItemsSource = (System.Collections.IList)items;
+        ShopPicker.ItemDisplayBinding = new Binding("ShopDetails");
+        var shopl = (ShopList)BindingContext;
 
             listView.ItemsSource = await App.Database.GetListProductsAsync(shopl.ID);
         }
